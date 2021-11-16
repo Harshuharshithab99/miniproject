@@ -1,0 +1,249 @@
+
+<section>
+    <button (click)="toggle()" id="bt">Add House</button>
+    <ng-container *ngIf="show">
+    <section class="addhouse " style="align-items: center;" >
+        
+        <form [formGroup]="addhouseForm" (submit)="addhouseFun()">
+        <table >
+        
+        <tr>
+            <td><label>Car No:</label></td>
+            <td><input type="number" id='hno' formControlName="hno">
+            <div *ngIf='addhouseForm.controls["hno"].invalid && addhouseForm.controls["hno"].touched'>
+                <span *ngIf="addhouseForm.controls['hno'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Car Owner address:</label></td>
+    
+            <td><input type="text" id='address' formControlName="address">
+            <div *ngIf='addhouseForm.controls["address"].invalid && addhouseForm.controls["address"].touched'>
+                <span *ngIf="addhouseForm.controls['address'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Owner Name:</label></td>
+            <td><input type="text" id='owname' formControlName="owname">
+            <div *ngIf='addhouseForm.controls["owname"].invalid && addhouseForm.controls["owname"].touched'>
+                <span *ngIf="addhouseForm.controls['owname'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Contact no:</label></td>
+            <td><input type="text" id='mobile' formControlName="mobile">
+            <div *ngIf='addhouseForm.controls["mobile"].invalid && addhouseForm.controls["mobile"].touched'>
+                <span *ngIf="addhouseForm.controls['mobile'].errors.required;else mobileelsepart">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+                <ng-template #mobileelsepart>
+                    <span *ngIf="addhouseForm.controls['mobile'].errors.pattern;else mobileelsepart2">
+                     <b>Only digits allowed</b>
+                    </span>
+                    <ng-template #mobileelsepart2>
+                        <span *ngIf="addhouseForm.controls['mobile'].errors.minlength ||addhouseForm.controls['mobile'].errors.maxlength">
+                         <b>min 10 and max 11 digit are allowed</b>
+                        </span>
+                    </ng-template>
+                </ng-template>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Advance Amount:</label></td>
+            <td><input type="number" id='advance' formControlName="advance" >
+            <div *ngIf='addhouseForm.controls["advance"].invalid && addhouseForm.controls["advance"].touched'>
+                <span *ngIf="Advance.errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Rent Amount:</label></td>
+            <td><input type="number" id='rent' formControlName="rent" >
+            <div *ngIf='Rent.invalid && Rent.touched'>
+                <span *ngIf="addhouseForm.controls['rent'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Description:</label></td>
+            <td><input type="text" id='descr' formControlName="descr" required>
+            <div *ngIf="addhouseForm.controls['descr'].invalid && addhouseForm.controls['descr'].touched">
+                <span *ngIf="addhouseForm.controls['descr'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <!-- <td><input type="submit" name="submit" value="Submit"> </td>
+            <td><input type="reset" name="reset" value="Reset"> </td> -->
+            <td><button type="button" class="btn btn-primary" (click)="addhouse()">Add</button></td>
+            <td><button type="button" class="btn btn-primary" (click)="reset()">Reset</button></td>
+        </tr>
+        </table>
+        </form>
+    </section>
+    </ng-container>
+    </section>
+    <br>
+    <hr>
+    <section>
+    <div class="form-group">
+        <label>Search:</label>
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchContent" id="listSearch">
+      
+            </div>
+    <div class="container">
+        <div class="row">
+            <table class="table mt-4 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Car ID</th>
+                        <th scope="col">Car Owner Address</th>
+                        <th scope="col">Owner Name</th>
+                        <th scope="col">contact no</th>
+                        <th scope="col">Advance Amount</th>
+                        <th scope="col">Rent Amount</th>
+                        <th scope="col">Description</th>
+                        <th scope="col" colspan="3">Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr  *ngFor="let house of listData |search: searchContent">
+                        <td>{{house.hno}}</td>
+                        <td>{{house.address}}</td>
+                        <td>{{house.owname}}</td>
+                        <td>{{house.mobile}}</td>
+                        <td>{{house.advance}}</td>
+                        <td>{{house.rent}}</td>
+                        <td>{{house.descr}}</td>
+                        <td><button type="button" class="btn btn-info" (click)="editButtonClick(house)">Edit</button></td>
+                        <td><button type="button" class="btn btn-danger mx-3" (click)="removeitem(house)">Delete</button></td>
+                        <!-- <td><button type="button" class="btn btn-info mx-3" (click)="updatehouse(house)">Update</button></td>
+                     -->
+                    </tr>
+    
+                </tbody>
+                <!-- <tbody>
+    
+                    <tr  *ngFor="let house of houseArray">
+                        <td>{{house.HouseNo}}</td>
+                        <td>{{house.House_Address}}</td>
+                        <td>{{house.Owname}}</td>
+                        <td>{{house.Mobile}}</td>
+                        <td>{{house.Advance}}</td>
+                        <td>{{house.Rent}}</td>
+                        <td>{{house.Descr}}</td>
+                        
+                        <td><button type="button" class="btn btn-info">Edit</button></td>
+                        <td><button type="button" class="btn btn-danger mx-3" (click)="removeitem(house)">Delete</button></td>
+                    </tr>
+    
+                </tbody> -->
+            </table>
+        </div>
+    </div>
+    
+    </section>
+    
+    
+    <!-- <section class="addhouse " style="align-items: center;" >
+        
+        <form [formGroup]="updatehouseForm" (submit)="updatehouseFun()">
+        <table >
+        
+        <tr>
+            <td><label>House No:</label></td>
+            <td><input type="number" id='hno1' [(ngModel)]="hno1" formControlName="hno1">
+            <div *ngIf='updatehouseForm.controls["hno1"].invalid && updatehouseForm.controls["hno1"].touched'>
+                <span *ngIf="updatehouseForm.controls['hno1'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>House address:</label></td>
+    
+            <td><input type="text" id='address' formControlName="address">
+            <div *ngIf='addhouseForm.controls["address"].invalid && addhouseForm.controls["address"].touched'>
+                <span *ngIf="addhouseForm.controls['address'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Owner Name:</label></td>
+            <td><input type="text" id='owname' formControlName="owname">
+            <div *ngIf='addhouseForm.controls["owname"].invalid && addhouseForm.controls["owname"].touched'>
+                <span *ngIf="addhouseForm.controls['owname'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Contact no:</label></td>
+            <td><input type="text" id='mobile' formControlName="mobile">
+            <div *ngIf='addhouseForm.controls["mobile"].invalid && addhouseForm.controls["mobile"].touched'>
+                <span *ngIf="addhouseForm.controls['mobile'].errors.required;else mobileelsepart">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+                <ng-template #mobileelsepart>
+                    <span *ngIf="addhouseForm.controls['mobile'].errors.pattern;else mobileelsepart2">
+                     <b>Only digits allowed</b>
+                    </span>
+                    <ng-template #mobileelsepart2>
+                        <span *ngIf="addhouseForm.controls['mobile'].errors.minlength ||addhouseForm.controls['mobile'].errors.maxlength">
+                         <b>min 10 and max 11 digit are allowed</b>
+                        </span>
+                    </ng-template>
+                </ng-template>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Advance Amount:</label></td>
+            <td><input type="number" id='advance' formControlName="advance" >
+            <div *ngIf='addhouseForm.controls["advance"].invalid && addhouseForm.controls["advance"].touched'>
+                <span *ngIf="Advance.errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Rent Amount:</label></td>
+            <td><input type="number" id='rent' formControlName="rent" >
+            <div *ngIf='Rent.invalid && Rent.touched'>
+                <span *ngIf="addhouseForm.controls['rent'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><label>Description:</label></td>
+            <td><input type="text" id='descr' formControlName="descr" required>
+            <div *ngIf="addhouseForm.controls['descr'].invalid && addhouseForm.controls['descr'].touched">
+                <span *ngIf="addhouseForm.controls['descr'].errors.required">
+                    <b [ngClass]="{myColor:true}">This field Required </b>
+                </span>
+            </div></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="submit" value="Submit"> </td>
+            <td><input type="reset" name="reset" value="Reset"> </td> 
+            <td><button type="button" class="btn btn-primary" (click)="addhouse()">Update</button></td>
+            <td><button type="button" class="btn btn-primary" (click)="cancel()">cancel</button></td>
+        </tr>
+        </table>
+        </form>
+    
+    </section> -->
+    
+    
